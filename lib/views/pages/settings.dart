@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:notebox/store/settings.dart';
 import 'package:notebox/utils/theme.dart';
 
-class _SectionSplitter extends StatelessWidget {
-  const _SectionSplitter({Key? key, required this.title}) : super(key: key);
+class SettingsSectionSplitter extends StatelessWidget {
+  const SettingsSectionSplitter({Key? key, required this.title})
+      : super(key: key);
   final String title;
 
   @override
@@ -22,8 +23,8 @@ class _SectionSplitter extends StatelessWidget {
   }
 }
 
-class _AboutSection extends StatelessWidget {
-  const _AboutSection({Key? key}) : super(key: key);
+class AboutSettingsSection extends StatelessWidget {
+  const AboutSettingsSection({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,8 +41,8 @@ class _AboutSection extends StatelessWidget {
   }
 }
 
-class _SystemSection extends ConsumerWidget {
-  const _SystemSection({Key? key}) : super(key: key);
+class SystemSettingsSection extends ConsumerWidget {
+  const SystemSettingsSection({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -90,11 +91,11 @@ class SettingsPage extends ConsumerWidget {
         ),
         children: const [
           SizedBox(height: 20),
-          _SectionSplitter(title: 'System'),
-          _SystemSection(),
-          _SectionSplitter(title: 'User'),
+          SettingsSectionSplitter(title: 'System'),
+          SystemSettingsSection(),
+          SettingsSectionSplitter(title: 'User'),
           SizedBox(height: 80),
-          _AboutSection(),
+          AboutSettingsSection(),
         ],
       ),
     );

@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:notebox/views/footer.dart';
 import 'package:notebox/views/side.dart';
 import 'package:notebox/views/header.dart';
-import 'package:notebox/router/controller.dart';
+import 'package:notebox/store/router.dart';
 
 const kSideWidth = 275.0;
 

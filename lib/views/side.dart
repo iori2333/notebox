@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:notebox/router/controller.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:notebox/store/router.dart';
 import 'package:notebox/widgets/route_tile.dart';
 
 class SideSplitter extends StatelessWidget {

@@ -1,16 +1,14 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:notebox/router/controller.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:window_manager/window_manager.dart';
+import 'package:notebox/store/router.dart';
 import 'package:notebox/utils/platform.dart';
 import 'package:notebox/utils/theme.dart';
 import 'package:notebox/widgets/avatar.dart';
-import 'package:window_manager/window_manager.dart';
 
 const kHeaderHeight = 42.0;
-const _kIconSize = 20.0;
+const kIconSize = 20.0;
 
 class MovableSpace extends StatelessWidget {
   const MovableSpace({Key? key, required this.child}) : super(key: key);
@@ -31,8 +29,7 @@ class MovableSpace extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var needMove = Platform.isLinux || Platform.isMacOS || Platform.isWindows;
-    if (!needMove) {
+    if (!isDesktop) {
       return child;
     }
 
@@ -54,8 +51,8 @@ class MovableSpace extends StatelessWidget {
   }
 }
 
-class _BaseIcon extends StatelessWidget {
-  const _BaseIcon({
+class BaseIcon extends StatelessWidget {
+  const BaseIcon({
     Key? key,
     required this.icon,
     required this.onTap,
@@ -70,15 +67,15 @@ class _BaseIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       icon: Icon(icon),
-      iconSize: _kIconSize,
+      iconSize: kIconSize,
       color: context.inversePrimary,
       onPressed: isActive ?? true ? onTap : null,
     );
   }
 }
 
-class _WindowOperations extends HookWidget {
-  const _WindowOperations({Key? key}) : super(key: key);
+class WindowOperations extends HookWidget {
+  const WindowOperations({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -100,12 +97,12 @@ class _WindowOperations extends HookWidget {
 
     return Row(
       children: [
-        _BaseIcon(
+        BaseIcon(
             icon: Icons.remove,
             onTap: () {
               WindowManager.instance.minimize();
             }),
-        _BaseIcon(
+        BaseIcon(
           icon: isMaximized.value ? Icons.fullscreen_exit : Icons.fullscreen,
           onTap: () async {
             if (await WindowManager.instance.isMaximized()) {
@@ -117,7 +114,7 @@ class _WindowOperations extends HookWidget {
             }
           },
         ),
-        _BaseIcon(
+        BaseIcon(
           icon: Icons.close,
           onTap: () {
             WindowManager.instance.close();
@@ -128,13 +125,13 @@ class _WindowOperations extends HookWidget {
   }
 }
 
-class _SettingsIcon extends ConsumerWidget {
-  const _SettingsIcon({Key? key}) : super(key: key);
+class SettingsIcon extends ConsumerWidget {
+  const SettingsIcon({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.read(routerProvider.notifier);
-    return _BaseIcon(
+    return BaseIcon(
       icon: Icons.settings,
       onTap: () => router.push('/settings'),
     );
@@ -150,12 +147,12 @@ class RouteControl extends ConsumerWidget {
     final router = ref.read(routerProvider.notifier);
     return Row(
       children: [
-        _BaseIcon(
+        BaseIcon(
           icon: Icons.chevron_left,
           isActive: route.canBack,
           onTap: () => router.back(),
         ),
-        _BaseIcon(
+        BaseIcon(
           icon: Icons.chevron_right,
           isActive: route.canForward,
           onTap: () => router.forward(),
@@ -198,8 +195,8 @@ class Header extends StatelessWidget {
               ),
               const AvatarContainer(),
               MovableSpace.wrapped(width: 12),
-              const _SettingsIcon(),
-              if (isDesktop) const _WindowOperations(),
+              const SettingsIcon(),
+              if (isDesktop) const WindowOperations(),
             ],
           ),
         ),
