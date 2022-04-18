@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:notebox/views/footer.dart';
+import 'package:notebox/views/pages/playing.dart';
 import 'package:notebox/views/side.dart';
 import 'package:notebox/views/header.dart';
 import 'package:notebox/store/router.dart';
@@ -17,15 +18,15 @@ class HomeContainer extends StatelessWidget {
     return ClipRect(
       child: LayoutBuilder(builder: (context, constraints) {
         return OverflowBox(
-          minHeight: 640,
-          maxHeight: max(constraints.maxHeight, 640),
-          minWidth: 800,
-          maxWidth: max(constraints.maxWidth, 800),
+          minHeight: 480,
+          maxHeight: max(constraints.maxHeight, 480),
+          minWidth: 720,
+          maxWidth: max(constraints.maxWidth, 720),
           child: Material(
             child: Column(
               children: const [
                 Header(),
-                Content(),
+                ContentContainer(),
                 Footer(),
               ],
             ),
@@ -36,25 +37,40 @@ class HomeContainer extends StatelessWidget {
   }
 }
 
+class ContentContainer extends ConsumerWidget {
+  const ContentContainer({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final route = ref.watch(routerProvider).current;
+    return Expanded(
+      child: Stack(
+        children: [
+          const Content(),
+          PlayingPage(visible: route.path == '/playing')
+        ],
+      ),
+    );
+  }
+}
+
 class Content extends StatelessWidget {
   const Content({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
-          SizedBox(
-            width: kSideWidth,
-            child: SideView(),
-          ),
-          VerticalDivider(width: 0),
-          Expanded(
-            child: RouteView(),
-          ),
-        ],
-      ),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: const [
+        SizedBox(
+          width: kSideWidth,
+          child: SideView(),
+        ),
+        VerticalDivider(width: 0),
+        Expanded(
+          child: RouteView(),
+        ),
+      ],
     );
   }
 }

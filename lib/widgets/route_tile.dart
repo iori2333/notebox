@@ -20,7 +20,7 @@ class RouteTile extends StatelessWidget {
     var decoration = isActive
         ? BoxDecoration(
             color: context.primaryColor.withOpacity(0.2),
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(4),
           )
         : null;
 
@@ -31,7 +31,7 @@ class RouteTile extends StatelessWidget {
       ),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(4),
         child: Container(
           decoration: decoration,
           height: 42,

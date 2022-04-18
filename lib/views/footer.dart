@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:notebox/store/router.dart';
 import 'package:notebox/utils/theme.dart';
 
 const kFootHeight = 64.0;
@@ -39,8 +40,15 @@ class PlayingItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.read(routerProvider.notifier);
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        if (ref.watch(routerProvider).current.path == '/playing') {
+          router.back();
+        } else {
+          router.push('/playing');
+        }
+      },
       child: Row(
         children: [
           const SizedBox(width: 20),

@@ -4,6 +4,7 @@ import 'package:notebox/init.dart';
 import 'package:notebox/app.dart';
 import 'package:notebox/store/settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:notebox/utils/platform.dart';
 
 void main() async {
   initializeApp();
@@ -21,9 +22,11 @@ class MyApp extends ConsumerWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           settings.setPreference(snapshot.requireData);
-          return const NoteBoxApp();
+          return const NoteBoxApp().platform();
         } else {
-          return Container();
+          return const Center(
+            child: CircularProgressIndicator(color: Colors.white),
+          );
         }
       },
     );

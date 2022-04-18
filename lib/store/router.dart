@@ -4,9 +4,8 @@ import 'package:notebox/utils/router.dart';
 import 'package:notebox/views/pages/settings.dart';
 
 final routerProvider =
-    StateNotifierProvider<ContentRouteController, RouterState>((ref) {
-  return ContentRouteController();
-});
+    StateNotifierProvider<ContentRouteController, RouterState>(
+        (ref) => ContentRouteController());
 
 typedef PageGenerator = Widget Function(Map<String, String>? params);
 
@@ -38,19 +37,28 @@ class ContentRouteController extends RouteController {
   final List<Page> _popPages = [];
 
   @override
-  bool get canBack => _pages.length > 1;
+  bool get canBack => playingPage != null || _pages.length > 1;
 
   @override
   bool get canForward => _popPages.isNotEmpty;
 
   @override
-  RouterTarget get current => (_pages.last.key as ValueKey<RouterTarget>).value;
+  RouterTarget get current =>
+      playingPage ?? (_pages.last.key as ValueKey<RouterTarget>).value;
 
   @override
   List<Page> get pages => _pages;
 
+  RouterTarget? playingPage;
+
   @override
   void back() {
+    if (playingPage != null) {
+      playingPage = null;
+      notifyListeners();
+      return;
+    }
+
     if (canBack) {
       _popPages.add(_pages.removeLast());
       notifyListeners();
@@ -72,7 +80,15 @@ class ContentRouteController extends RouteController {
       return;
     }
 
-    _pages.add(_buildPage(target));
+    if (target.path == '/playing') {
+      playingPage = target;
+    } else {
+      if (playingPage != null) {
+        playingPage = null;
+      }
+      _pages.add(_buildPage(target));
+    }
+
     _popPages.clear();
     notifyListeners();
   }

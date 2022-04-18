@@ -169,7 +169,7 @@ class Header extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       color: context.theme.primaryColor,
-      elevation: 0,
+      elevation: 4,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 4),
         child: SizedBox(

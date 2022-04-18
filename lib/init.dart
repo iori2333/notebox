@@ -17,7 +17,7 @@ void initializeApp() async {
 void _initDesktop() async {
   await WindowManager.instance.ensureInitialized();
 
-  const size = Size(960, 720);
+  const size = Size(720, 480);
   WindowManager.instance.setMinimumSize(size);
   WindowManager.instance.setTitleBarStyle(TitleBarStyle.hidden);
   scheduleMicrotask(() async {
